@@ -11,10 +11,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
+      backgroundColor: Colors.amberAccent,
+      appBar: AppBar(
+        title: Text('To Do'),
+        elevation: 10,
+      ),
+      body: ListView(
         children: [
-          ElevatedButton(onPressed: () {}, child: const Text("1st Button"))
+          // ToDoList();
         ],
       ),
     );
