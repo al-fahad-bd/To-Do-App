@@ -13,11 +13,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.amberAccent,
       appBar: AppBar(
-        title: Text('To Do'),
+        title: const Text('To Do App'),
         elevation: 10,
       ),
       body: ListView(
-        children: [
+        children: const [
           // ToDoList();
         ],
       ),
