@@ -78,9 +78,16 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Binary
+    - family: Binary X CHR
       fonts:
         - asset: lib/fonts/binxchr.ttf
+
+    - family: Binary
+      fonts:
+        - asset: lib/fonts/binaryt.ttf
+    - family: Mordred
+      fonts:
+        - asset: lib/fonts/Mordred-Bold.ttf
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

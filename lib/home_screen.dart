@@ -12,8 +12,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Text("Note Title"),
-          subtitle: Text('March 13, 2023 - High'),
+          title: Text(
+            "Note Title",
+            style: TextStyle(
+              fontFamily: 'Mordred',
+              color: Colors.black,
+            ),
+          ),
+          subtitle: Text(
+            'March 13, 2023 - High',
+            style: TextStyle(
+              fontFamily: 'Mordred',
+              color: Colors.black54,
+            ),
+          ),
           trailing: Checkbox(
             checkColor: Colors.black,
             tristate: true,
@@ -40,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Icon(Icons.tornado_rounded),
         title: const Text(
           'Things To Do',
-          style: TextStyle(fontFamily: 'Binary', fontSize: 36),
+          style: TextStyle(fontFamily: 'Binary X CHR', fontSize: 36),
         ),
         elevation: 80,
       ),
@@ -66,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     'MY TASK',
                     style: TextStyle(
                       color: Colors.black38,
-                      fontFamily: 'Binary',
+                      fontFamily: 'Binary X CHR',
                       fontSize: 40,
                       // fontWeight: FontWeight.bold,
                     ),
@@ -78,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     '0 of 10 Completed',
                     style: TextStyle(
                       color: Colors.black38,
-                      fontFamily: 'Binary',
+                      fontFamily: 'Binary X CHR',
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
