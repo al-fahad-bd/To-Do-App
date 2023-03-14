@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'add_todo_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,18 +11,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  dynamic _buildNote(int index) {
+  Widget _buildNote(int index) {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Text(
+          title: const Text(
             "Note Title",
             style: TextStyle(
               fontFamily: 'Mordred',
               color: Colors.black,
             ),
           ),
-          subtitle: Text(
+          subtitle: const Text(
             'March 13, 2023 - High',
             style: TextStyle(
               fontFamily: 'Mordred',
@@ -49,16 +52,34 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.lime[100],
       appBar: AppBar(
-        leading: Icon(Icons.tornado_rounded),
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
+          // child: Icon(
+          //   Icons.tornado_rounded,
+          //   color: Colors.lime[100],
+          //   size: 30,
+          // ),
+          child: Image.asset(
+            'assets/images/box.gif',
+            fit: BoxFit.cover,
+          ),
+        ),
         title: const Text(
           'Things To Do',
           style: TextStyle(fontFamily: 'Binary X CHR', fontSize: 36),
         ),
-        elevation: 80,
+        elevation: 60,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (_) => AddToDoScreen(),
+            ),
+          );
+        },
         child: const Icon(Icons.ac_unit_rounded),
       ),
       body: ListView.builder(
