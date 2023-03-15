@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/hidden_screen.dart';
 
 import 'add_todo_screen.dart';
 
@@ -52,16 +53,31 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.lime[100],
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
-          // child: Icon(
-          //   Icons.tornado_rounded,
-          //   color: Colors.lime[100],
-          //   size: 30,
-          // ),
-          child: Image.asset(
-            'assets/images/box.gif',
-            fit: BoxFit.cover,
+        leading: GestureDetector(
+          onLongPress: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (_) => const HiddenScreen(),
+              ),
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(10, 10, 0, 5),
+            // child: Icon(
+            //   Icons.tornado_rounded,
+            //   color: Colors.lime[100],
+            //   size: 30,
+            // ),
+            // child: Image.asset(
+            //   'assets/images/box.gif',
+            //   fit: BoxFit.cover,
+            // ),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(
+                'assets/images/box.gif',
+              ),
+            ),
           ),
         ),
         title: const Text(
