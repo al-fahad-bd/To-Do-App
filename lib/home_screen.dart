@@ -1,43 +1,87 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:todo/database/database.dart';
 import 'package:todo/hidden_screen.dart';
+import 'package:todo/models/task_model.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'add_todo_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  // const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget _buildNote(int index) {
+  late Future<List<Task>> _taskList;
+
+  final DateFormat _dateFormatter = DateFormat('MMM dd, year');
+
+  DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateTaskList();
+  }
+
+  _updateTaskList() {
+    _taskList = DatabaseHelper.instance.getTaskList();
+  }
+
+  Widget _buildTask(Task task) {
     return Column(
-      children: <Widget>[
+      children: [
         ListTile(
-          title: const Text(
-            "Note Title",
+          title: Text(
+            task.title!,
             style: TextStyle(
               fontFamily: 'Mordred',
-              color: Colors.black,
+              color: task.status == 0 ? Colors.black87 : Colors.black12,
+              decoration: task.status == 0
+                  ? TextDecoration.none
+                  : TextDecoration.lineThrough,
             ),
           ),
-          subtitle: const Text(
-            'March 13, 2023 - High',
+          subtitle: Text(
+            '${_dateFormatter.format(task.date!)} - ${task.priority}',
             style: TextStyle(
               fontFamily: 'Mordred',
-              color: Colors.black54,
+              color: task.status == 0 ? Colors.black87 : Colors.black12,
+              decoration: task.status == 0
+                  ? TextDecoration.none
+                  : TextDecoration.lineThrough,
             ),
           ),
           trailing: Checkbox(
             checkColor: Colors.black,
-            tristate: true,
+            tristate: false,
             onChanged: (value) {
               // print(value);
+              task.status = value! ? 1 : 0;
+              DatabaseHelper.instance.updateTask(task);
+              _updateTaskList();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => HomeScreen(),
+                ),
+              );
             },
             activeColor: Theme.of(context).primaryColor,
-            value: true,
+            value: task.status == 1 ? true : false,
+          ),
+          onTap: () => Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (_) => AddToDoScreen(
+                updateTaskList: _updateTaskList(),
+                task: task,
+              ),
+            ),
           ),
         ),
         const Divider(
@@ -92,51 +136,69 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (_) => AddToDoScreen(),
+              builder: (_) => AddToDoScreen(
+                updateTaskList: _updateTaskList,
+              ),
             ),
           );
         },
         child: const Icon(Icons.ac_unit_rounded),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 20.0),
-        itemCount: 10,
-        itemBuilder: (BuildContext conntext, int index) {
-          if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 30,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  Text(
-                    'MY TASK',
-                    style: TextStyle(
-                      color: Colors.black38,
-                      fontFamily: 'Binary X CHR',
-                      fontSize: 40,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    '0 of 10 Completed',
-                    style: TextStyle(
-                      color: Colors.black38,
-                      fontFamily: 'Binary X CHR',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
+      body: FutureBuilder(
+        future: _taskList,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
-          return _buildNote(index);
+
+          final int completedTaskCount = snapshot.data!
+              .where((Task task) => task.status == 1)
+              .toList()
+              .length;
+
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            itemCount: int.parse(snapshot.data!.length.toString()) + 1,
+            itemBuilder: (BuildContext conntext, int index) {
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 30,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Text(
+                        'MY TASK',
+                        style: TextStyle(
+                          color: Colors.black38,
+                          fontFamily: 'Binary X CHR',
+                          fontSize: 40,
+                          // fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '$completedTaskCount out of ${snapshot.data.length} Completed',
+                        style: const TextStyle(
+                          color: Colors.black38,
+                          fontFamily: 'Binary X CHR',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return _buildTask(snapshot.data![index - 1]);
+            },
+          );
         },
       ),
     );
