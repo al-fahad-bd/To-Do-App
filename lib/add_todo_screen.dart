@@ -75,6 +75,17 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
     }
   }
 
+  _delete() {
+    DatabaseHelper.instance.deleteTask(widget.task!.id!);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => HomeScreen(),
+      ),
+    );
+    widget.updateTaskList!();
+  }
+
   _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -272,6 +283,31 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                           ),
                         ),
                       ),
+                      widget.task != null
+                          ? Container(
+                              margin: EdgeInsets.symmetric(vertical: 20),
+                              height: 60.0,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.lime),
+                                ),
+                                onPressed: _delete,
+                                child: Text(
+                                  'Delete Task',
+                                  style: TextStyle(
+                                    color: Colors.lime[100],
+                                    fontSize: 20,
+                                    fontFamily: 'Mordred',
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 ),
