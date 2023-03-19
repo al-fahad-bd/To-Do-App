@@ -10,7 +10,7 @@ class Task {
   Task.withId({this.id, this.title, this.date, this.priority, this.status});
 
   Map<String, dynamic> toMap() {
-    final map = Map<String, dynamic>();
+    final map = <String, dynamic>{};
 
     if (id != null) {
       map['id'] = id;

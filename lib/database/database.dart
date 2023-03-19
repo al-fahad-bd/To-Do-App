@@ -9,6 +9,7 @@ import 'package:todo/models/task_model.dart';
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._instance();
 
+  // ignore: avoid_init_to_null
   static Database? _db = null;
 
   DatabaseHelper._instance();
@@ -29,15 +30,17 @@ class DatabaseHelper {
   */
 
   Future<Database?> get db async {
-    if (_db == null) {
-      _db = await _initDb();
-    }
+    // if (_db == null) {
+    //   _db = await _initDb();
+    // }
+    // return _db;
+    _db ??= await _initDb();
     return _db;
   }
 
   Future<Database> _initDb() async {
     Directory dir = await getApplicationDocumentsDirectory();
-    String path = dir.path + 'todo_list.db';
+    String path = '${dir.path}todo_list.db';
     final todoListDB =
         await openDatabase(path, version: 1, onCreate: _createDb);
     return todoListDB;
@@ -62,9 +65,9 @@ class DatabaseHelper {
 
     final List<Task> taskList = [];
 
-    taskMapList.forEach((taskMap) {
+    for (var taskMap in taskMapList) {
       taskList.add(Task.fromMap(taskMap));
-    });
+    }
     taskList.sort((taskA, taskB) => taskA.date!.compareTo(taskB.date!));
     return taskList;
   }

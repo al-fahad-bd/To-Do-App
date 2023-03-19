@@ -4,10 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:todo/database/database.dart';
 import 'package:todo/hidden_screen.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:sqflite/sqflite.dart';
+// import 'package:sqflite/sqflite.dart';
 
 import 'add_todo_screen.dart';
 
+// ignore: use_key_in_widget_constructors
 class HomeScreen extends StatefulWidget {
   // const HomeScreen({super.key});
 
@@ -18,9 +19,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Task>> _taskList;
 
-  final DateFormat _dateFormatter = DateFormat('MMM dd, year');
+  final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
 
-  DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+  // ignore: unused_field
+  final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
 
   @override
   void initState() {

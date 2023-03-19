@@ -10,7 +10,7 @@ class AddToDoScreen extends StatefulWidget {
   final Task? task;
   final Function? updateTaskList;
 
-  AddToDoScreen({this.task, this.updateTaskList});
+  const AddToDoScreen({super.key, this.task, this.updateTaskList});
 
   @override
   State<AddToDoScreen> createState() => _AddToDoScreenState();
@@ -27,7 +27,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
   String btnText = "Add Task";
   String titleText = "Add Title";
 
-  TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
   final List<String> _priorities = ['Low', 'Medium', 'High'];
@@ -77,11 +77,17 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
 
   _delete() {
     DatabaseHelper.instance.deleteTask(widget.task!.id!);
-    Navigator.pushReplacement(
-      context,
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => HomeScreen(),
+    //   ),
+    // );
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (_) => HomeScreen(),
+        builder: (context) => HomeScreen(),
       ),
+      (Route<dynamic> route) => false,
     );
     widget.updateTaskList!();
   }
@@ -91,7 +97,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
       _formKey.currentState!.save();
 
       // print to check if the data is saving to database or not
-      print('$_title, $_date, $_priority');
+      // print('$_title, $_date, $_priority');
 
       Task task = Task(title: _title, date: _date, priority: _priority);
 
@@ -99,22 +105,34 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
         task.status = 0;
         DatabaseHelper.instance.insertTask(task);
 
-        Navigator.pushReplacement(
-          context,
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (_) => HomeScreen(),
+        //   ),
+        // );
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (_) => HomeScreen(),
+            builder: (context) => HomeScreen(),
           ),
+          (Route<dynamic> route) => false,
         );
       } else {
         task.id = widget.task!.id;
         task.status = widget.task!.status;
         DatabaseHelper.instance.updateTask(task);
 
-        Navigator.pushReplacement(
-          context,
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (_) => HomeScreen(),
+        //   ),
+        // );
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (_) => HomeScreen(),
+            builder: (context) => HomeScreen(),
           ),
+          (Route<dynamic> route) => false,
         );
       }
       widget.updateTaskList!();
@@ -130,7 +148,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
         child: SingleChildScrollView(
           child: Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 40.0, vertical: 80.0),
+                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -142,7 +160,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                     ),
                   ),
                   child: Icon(
-                    Icons.arrow_back,
+                    Icons.arrow_back_ios_new_rounded,
                     size: 30.0,
                     color: Theme.of(context).primaryColor,
                   ),
@@ -217,10 +235,10 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 20),
                         child: DropdownButtonFormField(
                           isDense: true,
-                          icon: Icon(Icons.double_arrow_rounded),
+                          icon: const Icon(Icons.double_arrow_rounded),
                           iconSize: 20,
                           iconEnabledColor: Theme.of(context).primaryColor,
                           iconDisabledColor: Colors.black54,
@@ -248,6 +266,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                             ),
                           ),
                           value: _priority,
+                          // ignore: unnecessary_null_comparison
                           validator: (input) => _priority == null
                               ? 'Please select a priority level'
                               : null,
@@ -261,7 +280,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.symmetric(vertical: 20.0),
+                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         height: 60.0,
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -285,7 +304,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                       ),
                       widget.task != null
                           ? Container(
-                              margin: EdgeInsets.symmetric(vertical: 20),
+                              margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                               height: 60.0,
                               width: double.infinity,
                               decoration: BoxDecoration(
