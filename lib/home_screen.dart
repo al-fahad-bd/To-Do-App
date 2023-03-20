@@ -151,7 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                strokeWidth: 10,
+                backgroundColor: Colors.lime,
+                color: Colors.black26,
+              ),
             );
           }
 
