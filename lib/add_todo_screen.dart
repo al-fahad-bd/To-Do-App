@@ -153,11 +153,17 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => Navigator.pushReplacement(
-                    context,
+                  // onTap: () => Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => HomeScreen(),
+                  //   ),
+                  // ),
+                  onTap: () => Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
-                      builder: (_) => HomeScreen(),
+                      builder: (context) => HomeScreen(),
                     ),
+                    (Route<dynamic> route) => false,
                   ),
                   child: Icon(
                     Icons.arrow_back_ios_new_rounded,
